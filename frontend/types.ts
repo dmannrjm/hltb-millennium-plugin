@@ -35,6 +35,8 @@ export interface UIModeConfig {
   modeName: string;
   headerImageSelector: string;
   headerContainerSelector: string;
+  fallbackImageSelector: string;
+  fallbackContainerSelector: string;
   appIdPattern: RegExp;
 }
 

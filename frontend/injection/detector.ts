@@ -1,23 +1,33 @@
 import type { UIModeConfig, GamePageInfo } from '../types';
 
 export function detectGamePage(doc: Document, config: UIModeConfig): GamePageInfo | null {
-  const headerImg = doc.querySelector(config.headerImageSelector) as HTMLImageElement | null;
-  if (!headerImg) {
-    return null;
+  // Try primary selector first (logo.png)
+  const primaryImg = doc.querySelector(config.headerImageSelector) as HTMLImageElement | null;
+  if (primaryImg) {
+    const src = primaryImg.src || '';
+    const match = src.match(config.appIdPattern);
+    if (match) {
+      const appId = parseInt(match[1], 10);
+      const container = primaryImg.closest(config.headerContainerSelector) as HTMLElement | null;
+      if (container) {
+        return { appId, container };
+      }
+    }
   }
 
-  const src = headerImg.src || '';
-  const match = src.match(config.appIdPattern);
-  if (!match) {
-    return null;
+  // Try fallback selector (library_hero.jpg for games without logo)
+  const fallbackImg = doc.querySelector(config.fallbackImageSelector) as HTMLImageElement | null;
+  if (fallbackImg) {
+    const src = fallbackImg.src || '';
+    const match = src.match(config.appIdPattern);
+    if (match) {
+      const appId = parseInt(match[1], 10);
+      const container = fallbackImg.closest(config.headerContainerSelector) as HTMLElement | null;
+      if (container) {
+        return { appId, container };
+      }
+    }
   }
 
-  const appId = parseInt(match[1], 10);
-
-  const container = headerImg.closest(config.headerContainerSelector) as HTMLElement | null;
-  if (!container) {
-    return null;
-  }
-
-  return { appId, container };
+  return null;
 }
