@@ -1,18 +1,20 @@
-# HLTB for Millennium
+# HLTB for Steam
 
-A [Millennium](https://steambrew.app/) plugin that displays [How Long To Beat](https://howlongtobeat.com/) completion time data on game pages in the Steam library.
+A [Millennium](https://steambrew.app/) plugin that displays [How Long To Beat](https://howlongtobeat.com/) completion times on game pages in the Steam library.
+
+![Desktop Mode](example_desktop.png)
+
+![Big Picture Mode](example_bigPictureMode.png)
 
 ## Features
 
-- Displays HLTB completion times directly on game detail pages
+- Shows HLTB completion times directly on game pages:
   - Main Story
   - Main + Extras
   - Completionist
-  - All Styles average
-- Automatic game matching via Steam App ID and fuzzy name search
-- Local caching to minimize API requests (2 hour TTL)
-- Configurable display options
-- Support for Desktop UI and Big Picture mode
+- Works in both Desktop and Big Picture modes
+- Caches results locally (12 hour TTL with stale-while-revalidate)
+- Click "View Details" to open the full HLTB page
 
 ## Requirements
 
@@ -21,63 +23,64 @@ A [Millennium](https://steambrew.app/) plugin that displays [How Long To Beat](h
 
 ## Installation
 
-### From Plugin Database (Recommended)
+### From Millennium (Recommended)
 
-1. Open Steam
-2. Go to Millennium Settings > Plugins
-3. Click "Install a plugin"
-4. Search for "HLTB for Steam"
-5. Click Install
+1. Open Steam with Millennium installed
+2. Go to Settings > Plugins
+3. Search for "HLTB for Steam"
+4. Click Install
+5. Restart Steam
 
 ### Manual Installation
 
-1. Download the latest release
-2. Extract to `<Steam>/plugins/hltb-for-millennium/`
+1. Download the latest release from the [Releases](../../releases) page
+2. Extract the contents to your Steam plugins folder:
+   - Windows: `C:\Program Files (x86)\Steam\plugins\hltb-for-millennium\`
+   - Linux: `~/.steam/steam/plugins/hltb-for-millennium/`
 3. Restart Steam
 
 ## Usage
 
-Once installed, HLTB data automatically appears on game pages in your Steam library. Click any game to see its completion times.
-
-### Settings
-
-Access plugin settings through Millennium Settings > Plugins > HLTB for Steam:
-
-- Toggle individual stat categories on/off
-- Clear the local cache
-
-## Development
-
-See the [docs](docs/) folder for development documentation.
-
-Quick start:
-
-```bash
-# Install dependencies
-bun install
-
-# Development build with watch
-bun watch
-
-# Start Steam in dev mode
-steam -dev
-```
+Once installed, HLTB data automatically appears on game pages in your Steam library. Simply click on any game to see its completion times displayed on the header image.
 
 ## How It Works
 
-The plugin queries the How Long To Beat website when you view a game, matches it against your Steam library using App ID and game name, then displays the completion time estimates. Results are cached locally to avoid repeated requests.
+1. When you view a game page, the plugin detects the Steam App ID
+2. It queries the Steam API to get the game name
+3. It searches How Long To Beat for matching games
+4. Results are cached locally and displayed on the game header
 
 ## Known Limitations
 
-- Games not in the HLTB database will show no data
-- Some games may not match correctly due to name differences
-- Big Picture mode has some known issues (see [docs](docs/big-picture-mode.md))
+- Games not in the HLTB database will show placeholder dashes
+- Some games may not match correctly due to name differences between Steam and HLTB
+- DLC and non-game content will not have HLTB data
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Build
+npm run build
+
+# Development build with watch
+npm run watch
+```
+
+To test, launch Steam with Millennium in dev mode.
 
 ## Credits
 
-- [HLTB for Deck](https://github.com/hulkrelax/hltb-for-deck) - Original Decky plugin that inspired this project
-- [How Long To Beat](https://howlongtobeat.com/) - Data source
-- [Millennium](https://steambrew.app/) - Plugin framework
+- [How Long To Beat](https://howlongtobeat.com/) for the game completion data
+- [HLTB for Deck](https://github.com/hulkrelax/hltb-for-deck) for inspiration
+- [Millennium](https://steambrew.app/) for the plugin framework
+- [howlongtobeatpy](https://pypi.org/project/howlongtobeatpy/) for the Python API wrapper
+
+## Disclaimer
+
+This plugin is not affiliated with, endorsed by, or connected to How Long To Beat or HowLongToBeat.com. All game data is sourced from their public website. If you find this plugin useful, consider supporting [How Long To Beat](https://howlongtobeat.com/) directly.
 
 ## License
 

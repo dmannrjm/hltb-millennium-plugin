@@ -29,8 +29,9 @@ async function handleGamePage(doc: Document, config: UIModeConfig): Promise<void
 
   const { appId, container } = gamePage;
 
-  // Already showing for this app
-  if (appId === currentAppId) {
+  // Check if display already exists for this app
+  const existingDisplay = getExistingDisplay(doc);
+  if (appId === currentAppId && existingDisplay) {
     return;
   }
 
