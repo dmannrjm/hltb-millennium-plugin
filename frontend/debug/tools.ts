@@ -1,6 +1,7 @@
 import { EUIMode } from '../types';
 import { log } from '../services/logger';
 import { getCurrentMode, getCurrentConfig } from '../ui/uiMode';
+import { clearCache, getCacheStats } from '../services/cache';
 
 export function logDOMStructure(doc: Document, selector?: string): void {
   log('=== DOM Structure Debug ===');
@@ -66,6 +67,19 @@ export function exposeDebugTools(doc: Document): void {
       Array.from(el.children).forEach((child, i) => {
         log(`  [${i}] ${child.tagName}.${child.className.split(' ')[0] || '(no class)'}`);
       });
+    },
+    clearCache: () => {
+      clearCache();
+      log('Cache cleared. Refresh or navigate to a game to fetch fresh data.');
+    },
+    cacheStats: () => {
+      const stats = getCacheStats();
+      log('Cache entries:', stats.count);
+      if (stats.oldestTimestamp) {
+        const age = Math.round((Date.now() - stats.oldestTimestamp) / (1000 * 60 * 60 * 24));
+        log('Oldest entry:', age, 'days old');
+      }
+      return stats;
     },
   };
 

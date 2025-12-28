@@ -1,4 +1,5 @@
 import json
+import re
 
 import Millennium
 import PluginUtils  # type: ignore
@@ -8,6 +9,17 @@ from howlongtobeatpy import HowLongToBeat
 logger = PluginUtils.Logger()
 
 STEAM_API_URL = 'https://store.steampowered.com/api/appdetails'
+
+
+def sanitize_game_name(name: str) -> str:
+    """Clean up game name for better HLTB search matching."""
+    # Remove trademark/copyright symbols
+    name = re.sub(r'[^\x00-\x7F]', '', name)  # Remove non-ASCII (covers most symbols)
+    # Remove common suffixes that cause mismatches
+    name = re.sub(r'\s*[-:]\s*(Definitive|Ultimate|Complete|GOTY|Game of the Year)\s+Edition', '', name, flags=re.IGNORECASE)
+    # Clean up extra whitespace
+    name = re.sub(r'\s+', ' ', name).strip()
+    return name
 
 
 def get_game_name_from_steam(app_id: int) -> str | None:
@@ -40,9 +52,14 @@ def GetHltbData(app_id: int) -> str:
 
     logger.log(f'Got game name: {game_name}')
 
+    # Sanitize name for better search matching
+    search_name = sanitize_game_name(game_name)
+    if search_name != game_name:
+        logger.log(f'Sanitized to: {search_name}')
+
     # Search HLTB using the library
     try:
-        results = HowLongToBeat().search(game_name)
+        results = HowLongToBeat().search(search_name)
     except Exception as e:
         logger.error(f'HLTB search error: {e}')
         return json.dumps({'success': False, 'error': f'HLTB search error: {e}'})

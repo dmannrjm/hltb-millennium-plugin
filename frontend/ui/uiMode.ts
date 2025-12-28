@@ -3,6 +3,9 @@ import { EUIMode, type UIModeConfig } from '../types';
 import { log } from '../services/logger';
 import { getConfigForMode } from './selectors';
 
+const MAX_RETRIES = 20;
+const RETRY_DELAY_MS = 250;
+
 type ModeChangeCallback = (mode: EUIMode, doc: Document) => void;
 
 let currentMode: EUIMode = EUIMode.Unknown;
@@ -42,8 +45,9 @@ async function fetchDocumentForMode(mode: EUIMode): Promise<Document | undefined
   // Wait for mode transition to complete
   await sleep(500);
 
-  let attempts = 0;
-  while (attempts < 30) {
+  const modeName = mode === EUIMode.GamePad ? 'GamePad' : 'Desktop';
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     let doc: Document | undefined;
 
     if (mode === EUIMode.GamePad) {
@@ -65,17 +69,14 @@ async function fetchDocumentForMode(mode: EUIMode): Promise<Document | undefined
     }
 
     if (doc?.body) {
-      log('fetchDocumentForMode:', mode === EUIMode.GamePad ? 'GamePad' : 'Desktop',
-          'attempts:', attempts, 'found: true');
+      log('fetchDocumentForMode:', modeName, 'found on attempt', attempt, 'of', MAX_RETRIES);
       return doc;
     }
 
-    await sleep(250);
-    attempts++;
+    await sleep(RETRY_DELAY_MS);
   }
 
-  log('fetchDocumentForMode:', mode === EUIMode.GamePad ? 'GamePad' : 'Desktop',
-      'attempts:', attempts, 'found: false');
+  log('fetchDocumentForMode:', modeName, 'not found after', MAX_RETRIES, 'attempts');
   return undefined;
 }
 

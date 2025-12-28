@@ -21,16 +21,16 @@ async function init(): Promise<void> {
       headerContainer: config.headerContainerSelector,
     });
 
-    setupObserver(document, config);
+    await setupObserver(document, config);
     exposeDebugTools(document);
 
     registerModeChangeListener();
 
-    onModeChange((newMode, newDoc) => {
+    onModeChange(async (newMode, newDoc) => {
       log('Reinitializing for mode change...');
       resetState();
       const newConfig = getCurrentConfig();
-      setupObserver(newDoc, newConfig);
+      await setupObserver(newDoc, newConfig);
       exposeDebugTools(newDoc);
       log('Reinitialized for', newConfig.modeName, 'mode');
     });

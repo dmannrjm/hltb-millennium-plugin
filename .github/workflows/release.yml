@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Update plugin.json version
+        run: |
+          jq '.version = "${{ inputs.version }}"' plugin.json > plugin.json.tmp
+          mv plugin.json.tmp plugin.json
+
+      - name: Create release package
+        run: |
+          mkdir -p release/hltb-for-millennium
+          cp -r dist release/hltb-for-millennium/
+          cp -r backend release/hltb-for-millennium/
+          cp plugin.json release/hltb-for-millennium/
+          cp requirements.txt release/hltb-for-millennium/
+          cd release && zip -r ../hltb-for-millennium-v${{ inputs.version }}.zip hltb-for-millennium
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          files: hltb-for-millennium-v${{ inputs.version }}.zip
+          generate_release_notes: true

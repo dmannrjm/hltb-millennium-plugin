@@ -1,6 +1,8 @@
+import { sleep } from '@steambrew/client';
 import type { UIModeConfig } from '../types';
 import { log } from '../services/logger';
 import { fetchHltbData } from '../services/hltbApi';
+import { getCache } from '../services/cache';
 import { detectGamePage } from './detector';
 import {
   createLoadingDisplay,
@@ -9,6 +11,9 @@ import {
   removeExistingDisplay,
 } from '../display/components';
 import { injectStyles } from '../display/styles';
+
+const MAX_RETRIES = 20;
+const RETRY_DELAY_MS = 250;
 
 let currentAppId: number | null = null;
 let observer: MutationObserver | null = null;
@@ -46,25 +51,35 @@ async function handleGamePage(doc: Document, config: UIModeConfig): Promise<void
 
   try {
     const result = await fetchHltbData(appId);
-    const existing = getExistingDisplay(doc);
 
-    const updateDisplay = (data: typeof result.data) => {
+    const updateDisplayForApp = (targetAppId: number) => {
+      const existing = getExistingDisplay(doc);
+      if (!existing) return false;
+
+      const cached = getCache(targetAppId);
+      const data = cached?.entry?.data;
+
       if (data && (data.comp_main > 0 || data.comp_plus > 0 || data.comp_100 > 0)) {
-        if (existing) {
-          existing.innerHTML = createDisplay(doc, data).innerHTML;
-        }
+        existing.innerHTML = createDisplay(doc, data).innerHTML;
         return true;
       }
       return false;
     };
 
-    updateDisplay(result.data);
+    // Always try to update display for the current game (might be different from fetched game)
+    if (currentAppId !== appId) {
+      log('Game changed during fetch, updating display for current game:', currentAppId);
+      updateDisplayForApp(currentAppId);
+      return;
+    }
+
+    updateDisplayForApp(appId);
 
     // Handle background refresh for stale data
     if (result.refreshPromise) {
       result.refreshPromise.then((newData) => {
         if (newData && currentAppId === appId) {
-          updateDisplay(newData);
+          updateDisplayForApp(appId);
         }
       });
     }
@@ -73,7 +88,7 @@ async function handleGamePage(doc: Document, config: UIModeConfig): Promise<void
   }
 }
 
-export function setupObserver(doc: Document, config: UIModeConfig): void {
+export async function setupObserver(doc: Document, config: UIModeConfig): Promise<void> {
   // Clean up existing observer
   if (observer) {
     observer.disconnect();
@@ -93,8 +108,18 @@ export function setupObserver(doc: Document, config: UIModeConfig): void {
 
   log('MutationObserver set up for', config.modeName, 'mode');
 
-  // Initial check
-  handleGamePage(doc, config);
+  // Retry loop to find game page
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    const gamePage = detectGamePage(doc, config);
+    if (gamePage) {
+      log('setupObserver: game page found on attempt', attempt, 'of', MAX_RETRIES);
+      handleGamePage(doc, config);
+      return;
+    }
+    await sleep(RETRY_DELAY_MS);
+  }
+
+  log('setupObserver: no game page found after', MAX_RETRIES, 'attempts');
 }
 
 export function disconnectObserver(): void {
