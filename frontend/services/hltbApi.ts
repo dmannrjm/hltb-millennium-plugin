@@ -1,11 +1,8 @@
+import { callable } from '@steambrew/client';
 import { getCache, setCache } from './cache';
 
-// Using AugmentedSteam's API which already maps Steam appId to HLTB data
-const AUGMENTED_STEAM_API = 'https://api.augmentedsteam.com/app';
-
-// Our result type (matching what we display)
 export interface HltbGameResult {
-  game_id: number;
+  game_id: number; // HLTB game ID (for URL)
   game_name: string;
   comp_main: number; // seconds
   comp_plus: number; // seconds
@@ -13,18 +10,14 @@ export interface HltbGameResult {
   comp_all: number; // seconds
 }
 
-interface AugmentedSteamResponse {
-  hltb?: {
-    story: number | null;
-    extras: number | null;
-    complete: number | null;
-    url: string;
-  };
+interface BackendResponse {
+  success: boolean;
+  error?: string;
+  data?: HltbGameResult;
 }
 
-/**
- * Fetch HLTB data using AugmentedSteam's API (same approach they use)
- */
+const GetHltbData = callable<[{ app_id: number }], string>('GetHltbData');
+
 export async function fetchHltbData(appId: number): Promise<HltbGameResult | null> {
   // Check cache first
   const cached = getCache(appId);
@@ -33,39 +26,23 @@ export async function fetchHltbData(appId: number): Promise<HltbGameResult | nul
   }
 
   try {
-    const response = await fetch(`${AUGMENTED_STEAM_API}/${appId}/v2`);
+    const resultJson = await GetHltbData({ app_id: appId });
+    const result: BackendResponse = JSON.parse(resultJson);
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    const data: AugmentedSteamResponse = await response.json();
-
-    if (!data.hltb) {
+    if (!result.success || !result.data) {
+      console.log('[HLTB] Backend error:', result.error);
       setCache(appId, null);
       return null;
     }
 
-    const result: HltbGameResult = {
-      game_id: appId,
-      game_name: '', // Not needed for display
-      comp_main: (data.hltb.story || 0) * 60, // Convert minutes to seconds
-      comp_plus: (data.hltb.extras || 0) * 60,
-      comp_100: (data.hltb.complete || 0) * 60,
-      comp_all: 0, // Not provided by this API
-    };
-
-    setCache(appId, result);
-    return result;
+    setCache(appId, result.data);
+    return result.data;
   } catch (e) {
-    console.error('[HLTB] Fetch error:', e);
+    console.error('[HLTB] Backend call error:', e);
     return null;
   }
 }
 
-/**
- * Format seconds to hours display string
- */
 export function formatTime(seconds: number): string {
   if (!seconds || seconds === 0) return '--';
   const hours = Math.round((seconds / 3600) * 10) / 10;

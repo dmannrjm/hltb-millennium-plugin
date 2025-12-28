@@ -10,8 +10,8 @@ const HLTB_STYLES = `
 #hltb-for-millennium {
   position: absolute;
   bottom: 0;
-  left: 0;
   right: 0;
+  width: fit-content;
   z-index: 100;
 }
 
@@ -164,24 +164,15 @@ async function checkAndInject(): Promise<void> {
   try {
     const data = await fetchHltbData(appId);
     if (data && (data.comp_main > 0 || data.comp_plus > 0 || data.comp_100 > 0)) {
-      // Go up to find a proper container (not the img itself)
-      let headerContainer = headerImg.parentElement;
+      // Go up to level 4 - the consistent container (_2aPcBP45fdgOK22RN0jbhm)
+      const headerContainer = headerImg.closest('._2aPcBP45fdgOK22RN0jbhm');
 
-      // Go up a few levels to find a good container
-      for (let i = 0; i < 3 && headerContainer; i++) {
-        if (headerContainer.tagName !== 'IMG') {
-          break;
-        }
-        headerContainer = headerContainer.parentElement;
-      }
-
-      if (headerContainer && headerContainer.tagName !== 'IMG') {
-        // Ensure parent has relative positioning for absolute child
-        headerContainer.style.position = 'relative';
+      if (headerContainer) {
+        (headerContainer as HTMLElement).style.position = 'relative';
         headerContainer.appendChild(createDisplay(data));
-        debug(`Done: ${appId} in ${headerContainer.tagName}`);
+        debug(`Done: ${appId}`);
       } else {
-        debug(`No valid container`);
+        debug(`No container found`);
       }
     } else {
       debug(`No HLTB: ${appId}`);

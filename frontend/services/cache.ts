@@ -11,7 +11,7 @@ interface CacheStore {
 }
 
 const CACHE_KEY = 'hltb-millennium-cache';
-const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2 hours
+const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours
 
 /**
  * Get cached HLTB data for an app

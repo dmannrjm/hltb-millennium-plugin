@@ -39,26 +39,10 @@ export function HltbDisplay({ data }: HltbDisplayProps) {
         </a>
       </div>
       <div className="hltb-stats">
-        <StatItem
-          label="Main"
-          value={formatTime(data.comp_main)}
-          count={data.comp_main_count}
-        />
-        <StatItem
-          label="Main+"
-          value={formatTime(data.comp_plus)}
-          count={data.comp_plus_count}
-        />
-        <StatItem
-          label="100%"
-          value={formatTime(data.comp_100)}
-          count={data.comp_100_count}
-        />
-        <StatItem
-          label="All"
-          value={formatTime(data.comp_all)}
-          count={data.comp_all_count}
-        />
+        <StatItem label="Main" value={formatTime(data.comp_main)} />
+        <StatItem label="Main+" value={formatTime(data.comp_plus)} />
+        <StatItem label="100%" value={formatTime(data.comp_100)} />
+        <StatItem label="All" value={formatTime(data.comp_all)} />
       </div>
     </div>
   );
