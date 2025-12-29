@@ -1,3 +1,8 @@
+import { EUIMode } from '@steambrew/client';
+
+// Re-export for convenience
+export { EUIMode };
+
 // HLTB game data from backend
 export interface HltbGameResult {
   game_id: number;
@@ -20,13 +25,6 @@ export interface FetchResult {
   data: HltbGameResult | null;
   fromCache: boolean;
   refreshPromise: Promise<HltbGameResult | null> | null;
-}
-
-// UI Mode enum matching Steam's internal values
-export enum EUIMode {
-  Unknown = -1,
-  GamePad = 4, // Big Picture / Steam Deck
-  Desktop = 7,
 }
 
 // Selector configuration for each UI mode

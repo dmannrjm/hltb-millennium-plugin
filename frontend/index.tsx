@@ -118,6 +118,7 @@ export default definePlugin(() => {
     title: 'HLTB for Steam',
     icon: <IconsModule.Settings />,
     content: <SettingsContent />,
-    onUnload: cleanup,
+    // onDismount is not currently called by Millennium, but kept for future compatibility
+    onDismount: cleanup,
   };
 });
