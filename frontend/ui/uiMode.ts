@@ -9,8 +9,7 @@ const RETRY_DELAY_MS = 250;
 type ModeChangeCallback = (mode: EUIMode, doc: Document) => void;
 
 let currentMode: EUIMode = EUIMode.Unknown;
-let desktopDocument: Document | undefined;
-let gamepadDocument: Document | undefined;
+let currentDocument: Document | undefined;
 let modeChangeCallbacks: ModeChangeCallback[] = [];
 
 // Document access helpers
@@ -97,7 +96,7 @@ export function getCurrentConfig(): UIModeConfig {
 }
 
 export function getCurrentDocument(): Document | undefined {
-  return currentMode === EUIMode.GamePad ? gamepadDocument : desktopDocument;
+  return currentDocument;
 }
 
 export function onModeChange(callback: ModeChangeCallback): () => void {
@@ -116,39 +115,23 @@ export async function initUIMode(): Promise<{ mode: EUIMode; document: Document 
   currentMode = await detectUIMode();
   log('Detected UI mode:', currentMode === EUIMode.GamePad ? 'Big Picture' : 'Desktop');
 
-  if (currentMode === EUIMode.GamePad) {
-    gamepadDocument = doc;
-  } else {
-    desktopDocument = doc;
-  }
+  currentDocument = doc;
 
   return { mode: currentMode, document: doc };
 }
 
 export function registerModeChangeListener(): void {
-  try {
-    // @ts-ignore
-    SteamClient?.UI?.RegisterForUIModeChanged?.(async (newMode: EUIMode) => {
-      log('UI mode changed to:', newMode === EUIMode.GamePad ? 'Big Picture' : 'Desktop');
-      currentMode = newMode;
+  // @ts-ignore
+  SteamClient?.UI?.RegisterForUIModeChanged?.(async (newMode: EUIMode) => {
+    log('UI mode changed to:', newMode === EUIMode.GamePad ? 'Big Picture' : 'Desktop');
+    currentMode = newMode;
 
-      try {
-        const doc = await fetchDocumentForMode(newMode);
-        log('fetchDocumentForMode returned:', doc ? 'found' : 'not found');
+    const doc = await fetchDocumentForMode(newMode);
+    log('fetchDocumentForMode returned:', doc ? 'found' : 'not found');
 
-        if (doc) {
-          if (newMode === EUIMode.GamePad) {
-            gamepadDocument = doc;
-          } else {
-            desktopDocument = doc;
-          }
-          modeChangeCallbacks.forEach((cb) => cb(newMode, doc));
-        }
-      } catch (e) {
-        log('Error in mode change handler:', e);
-      }
-    });
-  } catch (e) {
-    log('Could not register for mode changes:', e);
-  }
+    if (doc) {
+      currentDocument = doc;
+      modeChangeCallbacks.forEach((cb) => cb(newMode, doc));
+    }
+  });
 }

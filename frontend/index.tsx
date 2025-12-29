@@ -38,6 +38,15 @@ async function init(): Promise<void> {
 
     unsubscribeModeChange = onModeChange(async (newMode, newDoc) => {
       log('Reinitializing for mode change...');
+
+      // Clean up old document first
+      const oldDoc = getCurrentDocument();
+      if (oldDoc && oldDoc !== newDoc) {
+        removeDebugTools(oldDoc);
+        removeStyles(oldDoc);
+        removeExistingDisplay(oldDoc);
+      }
+
       resetState();
       const newConfig = getCurrentConfig();
       await setupObserver(newDoc, newConfig);
