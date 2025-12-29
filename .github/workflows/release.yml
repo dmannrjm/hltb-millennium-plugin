@@ -1,10 +1,10 @@
-name: Release
+name: Create Release
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number (e.g., 1.0.0)'
+        description: 'Version tag (e.g., 1.0.0)'
         required: true
         type: string
 
@@ -12,42 +12,30 @@ permissions:
   contents: write
 
 jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ inputs.version }}
+
   release:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          name: hltb-for-millennium-${{ inputs.version }}
+          path: release-files
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Update plugin.json version
+      - name: Create zip from artifact
         run: |
-          jq '.version = "${{ inputs.version }}"' plugin.json > plugin.json.tmp
-          mv plugin.json.tmp plugin.json
-
-      - name: Create release package
-        run: |
-          mkdir -p release/hltb-for-millennium
-          cp -r dist release/hltb-for-millennium/
-          cp -r backend release/hltb-for-millennium/
-          cp plugin.json release/hltb-for-millennium/
-          cd release && zip -r ../hltb-for-millennium-v${{ inputs.version }}.zip hltb-for-millennium
+          cd release-files && zip -r ../hltb-for-millennium-${{ inputs.version }}.zip .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ inputs.version }}
           name: v${{ inputs.version }}
-          files: hltb-for-millennium-v${{ inputs.version }}.zip
+          files: hltb-for-millennium-${{ inputs.version }}.zip
           generate_release_notes: true

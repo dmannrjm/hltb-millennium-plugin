@@ -1,10 +1,22 @@
-name: Build
+name: Build Plugin
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., 1.0.0)'
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version tag (e.g., 1.0.0)'
+        required: true
+        type: string
+    outputs:
+      artifact-name:
+        description: "Name of the uploaded artifact"
+        value: hltb-for-millennium-${{ inputs.version }}
 
 jobs:
   build:
@@ -14,11 +26,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -26,7 +37,26 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Verify build output
+      - name: Create zip
         run: |
-          test -d dist || (echo "dist/ directory not found" && exit 1)
-          echo "Build successful"
+          mkdir -p build/hltb-for-millennium
+          cp -r .millennium/Dist build/hltb-for-millennium/
+          cp -r backend build/hltb-for-millennium/
+          cp plugin.json build/hltb-for-millennium/
+          cp LICENSE build/hltb-for-millennium/
+          cp README.md build/hltb-for-millennium/
+          cd build && zip -r hltb-for-millennium-${{ inputs.version }}.zip hltb-for-millennium
+
+      - name: Extract zip for artifact
+        run: |
+          mkdir -p temp_artifact
+          unzip "build/hltb-for-millennium-${{ inputs.version }}.zip" -d temp_artifact/
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hltb-for-millennium-${{ inputs.version }}
+          path: temp_artifact/*
+          include-hidden-files: true
+          if-no-files-found: error
+          overwrite: true
