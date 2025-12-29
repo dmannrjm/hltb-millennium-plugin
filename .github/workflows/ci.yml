@@ -9,6 +9,7 @@ on:
 
 jobs:
   changes:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     outputs:
       lua: ${{ steps.filter.outputs.lua }}
@@ -41,7 +42,7 @@ jobs:
 
   test:
     needs: changes
-    if: ${{ needs.changes.outputs.lua == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ always() && (needs.changes.outputs.lua == 'true' || github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

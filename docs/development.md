@@ -47,6 +47,21 @@ Or launch normally and then switch to Big Picture mode.
 - Frontend changes: Press F5 in Steam window
 - Backend (Lua) changes: Full Steam restart required
 
+## Running Lua Tests
+
+Install dependencies (Windows with scoop):
+```
+scoop install lua luarocks mingw
+luarocks install busted
+```
+
+Run tests:
+```
+busted tests/ --verbose
+```
+
+Tests also run automatically in CI on push/PR to main.
+
 ## Debugging
 
 Open DevTools at `http://localhost:8080` (only works with `-dev` flag).
