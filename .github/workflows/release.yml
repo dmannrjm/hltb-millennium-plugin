@@ -42,7 +42,6 @@ jobs:
           cp -r dist release/hltb-for-millennium/
           cp -r backend release/hltb-for-millennium/
           cp plugin.json release/hltb-for-millennium/
-          cp requirements.txt release/hltb-for-millennium/
           cd release && zip -r ../hltb-for-millennium-v${{ inputs.version }}.zip hltb-for-millennium
 
       - name: Create GitHub Release

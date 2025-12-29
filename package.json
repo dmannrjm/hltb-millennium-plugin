@@ -10,10 +10,10 @@
   "dependencies": {
     "@steambrew/client": "^5.5.3",
     "@steambrew/api": "^5.5.3",
-    "@steambrew/webkit": "^5.5.3"
+    "@steambrew/webkit": "^5.5.3",
+    "@steambrew/ttc": "^2.7.3"
   },
   "devDependencies": {
-    "@steambrew/ttc": "^2.7.3",
     "@types/react": "^18.2.0",
     "typescript": "^5.0.0"
   }

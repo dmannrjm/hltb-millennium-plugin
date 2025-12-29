@@ -1,3 +1,5 @@
+import React from 'react';
+import { definePlugin } from '@steambrew/client';
 import { log } from './services/logger';
 import {
   initUIMode,
@@ -40,8 +42,9 @@ async function init(): Promise<void> {
   }
 }
 
-init();
-
-export default async function PluginMain() {
-  // Plugin initialization is handled by init()
-}
+export default definePlugin(() => {
+  init();
+  return {
+    icon: <React.Fragment />,
+  };
+});
