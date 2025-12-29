@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**.lua'
+      - 'tests/**.lua'
+      - '.github/workflows/test.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'backend/**.lua'
+      - 'tests/**.lua'
+      - '.github/workflows/test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Lua and LuaRocks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.3 liblua5.3-dev luarocks
+
+      - name: Install busted
+        run: sudo luarocks install busted
+
+      - name: Run tests
+        run: busted tests/ --verbose
