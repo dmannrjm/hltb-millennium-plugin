@@ -23,21 +23,11 @@ A [Millennium](https://steambrew.app/) plugin that displays [How Long To Beat](h
 
 ## Installation
 
-### From Millennium (Recommended)
-
-1. Open Steam with Millennium installed
-2. Go to Settings > Plugins
-3. Select "HLTB for Steam"
-4. Copy the plugin ID and install via Millenium in Steam
-5. Enable the plugin
-
-### Manual Installation
-
-1. Download the latest release from the [Releases](../../releases) page
-2. Extract the contents to your Steam plugins folder:
-   - Windows: `C:\Program Files (x86)\Steam\plugins\hltb-for-millennium\`
-   - Linux: `~/.steam/steam/plugins/hltb-for-millennium/`
-3. Restart Steam
+1. Ensure you have Millennium installed on your Steam client
+2. Navigate to HLTB from the [plugins page](https://steambrew.app/plugins)
+3. Click the "Copy Plugin ID" button
+4. Back in Steam, go to Steam menu > Millenium > Plugins > Install a plugin and paste the code
+5. Follow the remaining instructions to install and enable the plugin
 
 ## Usage
 
@@ -52,7 +42,7 @@ Once installed, HLTB data automatically appears on game pages in your Steam libr
 
 There is a settings page where you can view the current cache stats or clear the cache, mainly useful for testing.
 
-HLTB uses name based search, and often times the name in HLTB does not match Steam. Most of the time it just works. Occasionally it does not, and so there is a [name fixes](./backend/name_fixes.lua) file. If anything bugs you enough then just submit a PR.
+HLTB uses name based search, and often times the name in HLTB does not match Steam. Most of the time it just works. Occasionally it does not, and so there is a [name fixes](./backend/name_fixes.lua) file. Some internal name simplification is done to handle frequent issues, but there are still some edge cases. Feel free to submit a PR for any additional name fixes.
 
 ## Known Limitations
 
