@@ -57,6 +57,31 @@ HLTB uses name based search, and often times the name in HLTB does not match Ste
 
 Also note that DLC and non-game content will not have HLTB data.
 
+## How to submit a name correction pull request (PR)
+
+We'll use Final Fantasy Tactics for this example.
+
+1. Navigate to the Steam page and not the AppID: https://store.steampowered.com/app/1004640/FINAL_FANTASY_TACTICS__The_Ivalice_Chronicles/
+2. Get the Steam API response for this game: https://store.steampowered.com/api/appdetails?appids=1004640
+3. Note the Steam name for the game: FINAL FANTASY TACTICS - The Ivalice Chronicles
+4. Find the game in HLTB: https://howlongtobeat.com/game/169173
+5. Note the HLTB name for the game: Final Fantasy Tactics: The Ivalice Chronicles
+
+So our mapping is: "FINAL FANTASY TACTICS - The Ivalice Chronicles" -> "Final Fantasy Tactics: The Ivalice Chronicles"
+
+How to submit a PR
+
+1. Fork this repo
+2. Make the modification to `backend/name_fixes.lua` in your local copy
+3. Commit and push
+4. At the Github page for your repo, click the link towards the top about submitting a pull request
+5. Send it to me and I will integrate it
+6. The patch will make it into the next release of the HLTB plugin
+
+More instructions [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+
+
+
 ## Development
 
 See the [development docs](./docs/README.md).
