@@ -34,21 +34,34 @@ The skill accepts three input formats:
    `https://store.steampowered.com/api/appdetails?appids={APPID}`
 2. Extract the name from `response[appid].data.name`
 3. Search HLTB for the game (see "Searching HLTB" below)
-4. Present both names and ask user to confirm the mapping
+4. Present confirmation summary and ask user to confirm the mapping
 
 ### If given a Steam name only:
-1. Search HLTB for the game (see "Searching HLTB" below)
-2. Present both names and ask user to confirm the mapping
+1. Search for the Steam app ID: WebSearch `{game_name} site:store.steampowered.com`
+2. Fetch the Steam API to verify the exact name:
+   `https://store.steampowered.com/api/appdetails?appids={APPID}`
+3. Search HLTB for the game (see "Searching HLTB" below)
+4. Present confirmation summary and ask user to confirm the mapping
 
 ### If given a full mapping (contains ` -> `):
 1. Parse the arguments to extract the Steam name and HLTB name
 2. Proceed directly to adding the mapping
 
 ### Searching HLTB
-1. Use WebSearch to find the HLTB page: `{game_name} howlongtobeat`
-2. Find the HLTB game page URL in results (format: `howlongtobeat.com/game/{id}`)
-3. Note the exact HLTB game name from the search result title
-4. Require the user to confirm the mapping is correct; provide the HLTB game page URL
+Note: Claude cannot directly access howlongtobeat.com, so use IsThereAnyDeal as a proxy.
+
+1. Use WebSearch: `{game_name} IsThereAnyDeal`
+2. Find the IsThereAnyDeal game page in results (format: `isthereanydeal.com/game/{slug}/info/`)
+3. Fetch the IsThereAnyDeal page to get the HLTB game ID and name
+4. Construct the HLTB URL: `https://howlongtobeat.com/game/{id}`
+
+### Confirmation Output Format
+Always present this exact format before asking for user confirmation:
+```
+- **Steam name:** "{exact name from Steam API}"
+- **HLTB name:** "{exact name from HLTB}"
+- **HLTB page:** {URL}
+```
 
 ### Adding the mapping:
 1. Sanitize the Steam name (see rules below)
@@ -58,12 +71,16 @@ The skill accepts three input formats:
 
 ## Sanitization Rules
 
-Apply these transformations to the Steam name to get the lookup key:
+See `backend/hltb_utils.lua` for the canonical `sanitize_game_name` implementation. Always check the code.
+
+Current rules:
 - Remove ™ (trademark symbol)
 - Remove ® (registered trademark)
 - Remove © (copyright symbol)
 - Collapse multiple spaces to single space
 - Trim leading/trailing whitespace
+
+Update this skill so that it remains in sync with the code.
 
 ## Example Workflow
 
@@ -71,8 +88,11 @@ For app ID 1004640:
 
 1. Fetch Steam API: `https://store.steampowered.com/api/appdetails?appids=1004640`
 2. Steam name: "FINAL FANTASY TACTICS - The Ivalice Chronicles"
-3. WebSearch: "FINAL FANTASY TACTICS howlongtobeat"
-4. Find HLTB page: https://howlongtobeat.com/game/169173
-5. HLTB name: "Final Fantasy Tactics: The Ivalice Chronicles"
+3. WebSearch: "FINAL FANTASY TACTICS IsThereAnyDeal"
+4. Fetch IsThereAnyDeal page to get HLTB game ID
+5. Present confirmation:
+   - **Steam name:** "FINAL FANTASY TACTICS - The Ivalice Chronicles"
+   - **HLTB name:** "Final Fantasy Tactics: The Ivalice Chronicles"
+   - **HLTB page:** https://howlongtobeat.com/game/169173
 6. User confirms mapping
 7. Add to name_fixes.lua: `["FINAL FANTASY TACTICS - The Ivalice Chronicles"] = "Final Fantasy Tactics: The Ivalice Chronicles"`
