@@ -86,7 +86,7 @@ More instructions [here](https://docs.github.com/en/pull-requests/collaborating-
 
 See the [development docs](./docs/README.md).
 
-Pull requests are welcome and appreciated! I'm not accepting feature requests as issues — if you want something fixed or added, submit a PR.
+Pull requests are welcome and appreciated!
 
 ## Credits
 
