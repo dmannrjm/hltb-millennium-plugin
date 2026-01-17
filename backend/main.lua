@@ -12,17 +12,28 @@ local steam = require("steam")
 local utils = require("hltb_utils")
 local name_fixes = require("name_fixes")
 
+-- Get game name with optional fallback sources
+-- To add a fallback: see steam.lua for pattern, tests/steam_spec.lua for tests
+-- Do not modify the Steam API or tests, makes new files for new sources
+local function get_game_name(app_id)
+    -- Try first-party Steam API
+    local name, err = steam.get_game_name(app_id)
+    if name then return name end
+
+    -- Add fallback sources here
+
+    -- Fallback example:
+    -- name, err = steamhunters.get_game_name(app_id)
+    -- if name then return name end
+    return nil, err
+end
+
 -- Main function called by frontend
 function GetHltbData(app_id)
     local success, result = pcall(function()
         logger:info("GetHltbData called for app_id: " .. tostring(app_id))
 
-        -- Get game name from Steam
-        -- Optional: add fallback sources here for region-locked games
-        -- Pattern to follow for any new fallbacks:
-        --   code: see steam.lua e.g. build_url(), parse_response(), get_game_name()
-        --   test: see tests/steam_spec.lua
-        local game_name, name_err = steam.get_game_name(app_id)
+        local game_name, name_err = get_game_name(app_id)
         if not game_name then
             logger:error("Could not get game name: " .. (name_err or "unknown"))
             return json.encode({ success = false, error = "Could not get game name" })
