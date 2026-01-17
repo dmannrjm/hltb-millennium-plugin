@@ -18,6 +18,10 @@ function GetHltbData(app_id)
         logger:info("GetHltbData called for app_id: " .. tostring(app_id))
 
         -- Get game name from Steam
+        -- Optional: add fallback sources here for region-locked games
+        -- Pattern to follow for any new fallbacks:
+        --   code: see steam.lua e.g. build_url(), parse_response(), get_game_name()
+        --   test: see tests/steam_spec.lua
         local game_name, name_err = steam.get_game_name(app_id)
         if not game_name then
             logger:error("Could not get game name: " .. (name_err or "unknown"))
