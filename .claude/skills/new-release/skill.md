@@ -73,14 +73,15 @@ Display this exact format and ask for confirmation:
 2. Update package.json version: {OLD} -> {NEW}
 3. Run `npm install` to update package-lock.json
 4. Run `npm run build` to verify build succeeds
-5. Commit: "Release v{NEW_VERSION}"
-6. Push to origin/main
-7. Trigger GitHub Action "Create Release"
-8. Wait for release workflow to complete
-9. Update submodule in ../PluginDatabase to latest commit
-10. Commit in PluginDatabase: "Update HLTB for Steam to v{NEW_VERSION}"
-11. Push PluginDatabase to origin
-12. Create PR to SteamClientHomebrew/PluginDatabase
+5. Run Lua tests to verify backend code
+6. Commit: "Release v{NEW_VERSION}"
+7. Push to origin/main
+8. Trigger GitHub Action "Create Release"
+9. Wait for release workflow to complete
+10. Update submodule in ../PluginDatabase to latest commit
+11. Commit in PluginDatabase: "Update HLTB for Steam to v{NEW_VERSION}"
+12. Push PluginDatabase to origin
+13. Create PR to SteamClientHomebrew/PluginDatabase
 
 Proceed with release?
 ```
@@ -105,29 +106,35 @@ npm run build
 ```
 Abort if build fails.
 
-#### Step 5: Commit
+#### Step 5: Run Lua tests
+```bash
+cmd //c "busted tests/"
+```
+Abort if any tests fail. If busted is not available, see `docs/development.md` section "Running Lua Tests" for setup instructions.
+
+#### Step 6: Commit
 ```bash
 git add plugin.json package.json package-lock.json
 git commit -m "Release v{VERSION}"
 ```
 
-#### Step 6: Push
+#### Step 7: Push
 ```bash
 git push origin main
 ```
 
-#### Step 7: Trigger GitHub Action
+#### Step 8: Trigger GitHub Action
 ```bash
 gh workflow run release.yml -f version={VERSION}
 ```
 
-#### Step 8: Wait for workflow
+#### Step 9: Wait for workflow
 ```bash
 gh run list --workflow=release.yml --limit 1 --json status,conclusion,databaseId
 ```
 Poll every 10 seconds until status is "completed". Abort if conclusion is not "success".
 
-#### Step 9: Update submodule
+#### Step 10: Update submodule
 ```bash
 cd ../PluginDatabase/plugins/hltb-millennium-plugin
 git fetch origin
@@ -135,20 +142,20 @@ git checkout origin/main
 cd ../..
 ```
 
-#### Step 10: Commit PluginDatabase
+#### Step 11: Commit PluginDatabase
 ```bash
 cd ../PluginDatabase
 git add plugins/hltb-millennium-plugin
 git commit -m "Update HLTB for Steam to v{VERSION}"
 ```
 
-#### Step 11: Push PluginDatabase
+#### Step 12: Push PluginDatabase
 ```bash
 cd ../PluginDatabase
 git push origin
 ```
 
-#### Step 12: Create PR
+#### Step 13: Create PR
 ```bash
 cd ../PluginDatabase
 gh pr create --repo SteamClientHomebrew/PluginDatabase --title "Update HLTB for Steam to v{VERSION}" --body "Updates the HLTB for Steam plugin submodule to v{VERSION}."
@@ -169,4 +176,5 @@ Provide clear, actionable error messages:
 - **Wrong branch**: "Currently on branch {X}. Switch to main before releasing."
 - **Behind remote**: "Local main is behind origin/main. Pull latest changes first."
 - **Build failed**: "Build failed. Fix build errors before releasing."
+- **Tests failed**: "Lua tests failed. Fix test failures before releasing."
 - **Workflow failed**: "GitHub release workflow failed. Check Actions tab for details."
