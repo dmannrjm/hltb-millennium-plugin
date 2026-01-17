@@ -80,13 +80,13 @@ How to submit a PR
 
 More instructions [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
-
-
 ## Development
 
-See the [development docs](./docs/README.md).
+Pull requests are welcome and appreciated! See the [development docs](./docs/README.md).
 
-Pull requests are welcome and appreciated!
+For name corrections please submit a pull request, direct submissions are not accepted. Automated tests will run and check for common naming issues.
+
+Before submitting a name correction fix, please edit your local plugin file and test it locally by editing: `Steam/plugins/hltb-for-millennium/backend/name_fixes.lua`. This is also the fastest way to implement a name correction - the full release process for this repository and the Millennium plugin database can take 1-2 weeks or more.
 
 ## Credits
 
