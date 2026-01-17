@@ -26,7 +26,7 @@ return {
     ["Life Goes On: Done to Death"] = "Life Goes On",
     ["Meadow - A Shelter Game"] = "Meadow",
     ["Warhammer 40,000: Dawn of War II: Retribution"] = "Warhammer 40,000: Dawn of War II - Retribution",
-    ["STAR WARS Battlefront II (Classic, 2005)"] = "STAR WARS Battlefront II"
+    ["STAR WARS Battlefront II (Classic, 2005)"] = "STAR WARS Battlefront II",
     ["Marvel’s Spider-Man Remastered"] = "Marvel's Spider-Man Remastered",
     ["Disco Elysium - The Final Cut"] = "Disco Elysium",
     ["Lewd Girls, Leave Me Alone! I Just Want to Play Video Games and Watch Anime! ~ Hentai Edition"] = "Lewd Girls, Leave Me Alone! I Just Want to Play Video Games and Watch Anime! Hentai Edition",
