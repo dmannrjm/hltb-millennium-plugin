@@ -9,23 +9,28 @@ local millennium = require("millennium")
 local json = require("json")
 local hltb = require("hltb")
 local steam = require("steam")
+local steamhunters = require("steamhunters")
 local utils = require("hltb_utils")
 local name_fixes = require("name_fixes")
 
 -- Get game name with optional fallback sources
--- To add a fallback: see steam.lua for pattern, tests/steam_spec.lua for tests
--- Do not modify the Steam API or tests, makes new files for new sources
 local function get_game_name(app_id)
-    -- Try first-party Steam API
+    -- 1. Try first-party Steam API
     local name, err = steam.get_game_name(app_id)
-    if name then return name end
+    if name then 
+        return name 
+    end
 
-    -- Add fallback sources here
+    logger:info("Steam API failed for " .. tostring(app_id) .. ": " .. (err or "unknown") .. ". Trying fallback...")
 
-    -- Fallback example:
-    -- name, err = steamhunters.get_game_name(app_id)
-    -- if name then return name end
-    return nil, err
+    -- 2. Fall back to SteamHunters
+    local sh_name, sh_err = steamhunters.get_game_name(app_id)
+    if sh_name then
+        logger:info("Fallback successful: Found via SteamHunters")
+        return sh_name
+    end
+    
+    return nil, "All sources failed. Steam: " .. (err or "nil") .. ", SH: " .. (sh_err or "nil")
 end
 
 -- Main function called by frontend
