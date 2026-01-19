@@ -24,6 +24,7 @@ return {
     ["Heroes of Might & Magic V: Tribes of the East"] = "Heroes of Might and Magic V: Tribes of the East",
     ["Huntsman: The Orphanage (Halloween Edition)"] = "Huntsman: The Orphanage",
     ["Kao the Kangaroo: Round 2 (2003 re-release)"] = "Kao the Kangaroo: Round 2",
+    ["KILL la KILL -IF"] = "Kill la Kill The Game: IF",
     ["Legacy of Kain Soul Reaver 1&2 Remastered"] = "Legacy of Kain: Soul Reaver 1 & 2 Remastered",
     ["LEGO Star Wars - The Complete Saga"] = "LEGO Star Wars: The Complete Saga",
     ["LEGO Star Wars III - The Clone Wars"] = "LEGO Star Wars III: The Clone Wars",
