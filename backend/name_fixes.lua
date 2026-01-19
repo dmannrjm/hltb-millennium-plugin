@@ -57,6 +57,7 @@ return {
     ["Lobotomy Corporation | Monster Management Simulation"] = "Lobotomy Corporation",
     ["Lost Castle / 失落城堡"] = "Lost Castle",
     ["Machinika: Museum"] = "Machinika Museum",
+    ["Magical Diary: Horse Hall"] = "Magical Diary",
     ["Marvel’s Spider-Man Remastered"] = "Marvel's Spider-Man Remastered",
     ["Meadow - A Shelter Game"] = "Meadow",
     ["Might & Magic X - Legacy"] = "Might and Magic X: Legacy",
