@@ -7,6 +7,7 @@ return {
     ["Ace of Spades: Battle Builder"] = "Ace of Spades",
     ["ATOM RPG: Post-apocalyptic indie game"] = "ATOM RPG",
     ["Batman: Arkham Asylum Game of the Year Edition"] = "Batman: Arkham Asylum GOTY",
+    ["Battle Chef Brigade Deluxe"] = "Battle Chef Brigade",
     ["Borderlands 2 RU"] = "Borderlands 2",
     ["Borderlands Game of the Year Enhanced"] = "Borderlands: Game of the Year",
     ["Borderlands GOTY Enhanced"] = "Borderlands: Game of the Year",
