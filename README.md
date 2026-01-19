@@ -67,7 +67,12 @@ We'll use Final Fantasy Tactics for this example.
 4. Find the game in HLTB: https://howlongtobeat.com/game/169173
 5. Note the HLTB name for the game: Final Fantasy Tactics: The Ivalice Chronicles
 
-So our mapping is: "FINAL FANTASY TACTICS - The Ivalice Chronicles" -> "Final Fantasy Tactics: The Ivalice Chronicles"
+So our mapping is: "FINAL FANTASY TACTICS - The Ivalice Chronicles" -> "Final Fantasy Tactics: The Ivalice Chronicles". So we add a line to the name_fixes.lua file like this:
+`["FINAL FANTASY TACTICS - The Ivalice Chronicles"] = "Final Fantasy Tactics: The Ivalice Chronicles",`
+
+The first entry (key) is the Steam version of the name. The second entry (value) is what we want to substitute it with, which should match HLTB.
+
+When we add it, the new entry needs to be in alphabetical order and include a comma at the end. There is an automated check that looks for duplicates and if it has either of these errors it won't pass the test so won't be merged.
 
 How to submit a PR
 
