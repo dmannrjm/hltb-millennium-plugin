@@ -46,4 +46,5 @@ return {
     ["ToeJam & Earl: Back in the Groove!"] = "ToeJam & Earl: Back in the Groove",
     ["Total War: NAPOLEON – Definitive Edition"] = "Napoleon: Total War",
     ["Warhammer 40,000: Dawn of War II: Retribution"] = "Warhammer 40,000: Dawn of War II - Retribution",
+    ["We Love Katamari REROLL+ Royal Reverie"] = "We Love Katamari Reroll + Royal Reverie",
 }
