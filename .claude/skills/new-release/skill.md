@@ -35,7 +35,14 @@ If no version is provided, suggests a patch increment.
    git branch --show-current
    git fetch origin && git status -uno
    ```
-5. Verify `../PluginDatabase` exists and contains the submodule:
+5. Get commits since last release for release notes:
+   ```bash
+   git log v{GITHUB_VERSION}..HEAD --oneline --no-merges
+   ```
+6. Generate release notes: one bullet per commit, excluding:
+   - Version bump commits ("Release v...")
+   - Trivial commits (typos, formatting)
+7. Verify `../PluginDatabase` exists and contains the submodule:
    ```bash
    ls ../PluginDatabase/plugins/hltb-millennium-plugin
    ```
@@ -67,6 +74,10 @@ Display this exact format and ask for confirmation:
 - Local version: {LOCAL_VERSION}
 - GitHub release: {GITHUB_VERSION}
 - Git: clean, on main, up-to-date
+
+### Release Notes
+- {BULLET_POINT_PER_SIGNIFICANT_COMMIT}
+- ...
 
 ### Steps to Execute
 1. Update plugin.json version: {OLD} -> {NEW}
@@ -158,7 +169,10 @@ git push origin
 #### Step 13: Create PR
 ```bash
 cd ../PluginDatabase
-gh pr create --repo SteamClientHomebrew/PluginDatabase --title "Update HLTB for Steam to v{VERSION}" --body "Updates the HLTB for Steam plugin submodule to v{VERSION}."
+gh pr create --repo SteamClientHomebrew/PluginDatabase --title "Update HLTB for Steam to v{VERSION}" --body "Updates the HLTB for Steam plugin submodule to v{VERSION}.
+
+## Changes
+{RELEASE_NOTES_AS_BULLET_POINTS}"
 ```
 
 ### Completion
