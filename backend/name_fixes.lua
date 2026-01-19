@@ -40,6 +40,7 @@ return {
     ["Leisure Suit Larry 6 - Shape Up Or Slip Out"] = "Leisure Suit Larry 6: Shape Up or Slip Out!",
     ["Lewd Girls, Leave Me Alone! I Just Want to Play Video Games and Watch Anime! ~ Hentai Edition"] = "Lewd Girls, Leave Me Alone! I Just Want to Play Video Games and Watch Anime! Hentai Edition",
     ["Life Goes On: Done to Death"] = "Life Goes On",
+    ["Lifeless Planet Premier Edition"] = "Lifeless Planet",
     ["Lobotomy Corporation | Monster Management Simulation"] = "Lobotomy Corporation",
     ["Machinika: Museum"] = "Machinika Museum",
     ["Marvel’s Spider-Man Remastered"] = "Marvel's Spider-Man Remastered",
