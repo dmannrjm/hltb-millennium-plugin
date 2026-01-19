@@ -43,6 +43,7 @@ return {
     ["Sid Meier's Civilization® VI"] = "Sid Meiers Civilization VI",
     ["Space Pilgrim Episode II: Epsilon Indi"] = "Space Pilgrim: Episode Two - Epsilon Indi",
     ["STAR WARS Battlefront II (Classic, 2005)"] = "STAR WARS Battlefront II",
+    ["ToeJam & Earl: Back in the Groove!"] = "ToeJam & Earl: Back in the Groove",
     ["Total War: NAPOLEON – Definitive Edition"] = "Napoleon: Total War",
     ["Warhammer 40,000: Dawn of War II: Retribution"] = "Warhammer 40,000: Dawn of War II - Retribution",
 }
