@@ -14,6 +14,7 @@ return {
     ["Dark Messiah of Might & Magic"] = "Dark Messiah of Might and Magic",
     ["Dead Rising 3 Apocalypse Edition"] = "Dead Rising 3",
     ["Disco Elysium - The Final Cut"] = "Disco Elysium",
+    ["DISSIDIA FINAL FANTASY NT Free Edition"] = "Dissidia Final Fantasy NT",
     ["Divinity: Original Sin (Classic)"] = "Divinity: Original Sin",
     ["Double Dragon: Neon"] = "Double Dragon Neon",
     ["Dying Light 2 Stay Human: Reloaded Edition"] = "Dying Light 2 Stay Human",
