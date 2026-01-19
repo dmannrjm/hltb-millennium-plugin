@@ -51,6 +51,7 @@ return {
     ["SimCity™ 4 Deluxe Edition"] = "SimCity 4 Deluxe",
     ["Space Pilgrim Episode II: Epsilon Indi"] = "Space Pilgrim: Episode Two - Epsilon Indi",
     ["STAR WARS Battlefront II (Classic, 2005)"] = "STAR WARS Battlefront II",
+    ["STRIDER™ / ストライダー飛竜®"] = "Strider (2014)",
     ["ToeJam & Earl: Back in the Groove!"] = "ToeJam & Earl: Back in the Groove",
     ["Total War: NAPOLEON – Definitive Edition"] = "Napoleon: Total War",
     ["Warhammer 40,000: Dawn of War II: Retribution"] = "Warhammer 40,000: Dawn of War II - Retribution",
