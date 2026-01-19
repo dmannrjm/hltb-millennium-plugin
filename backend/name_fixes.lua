@@ -42,6 +42,7 @@ return {
     ["Life Goes On: Done to Death"] = "Life Goes On",
     ["Lifeless Planet Premier Edition"] = "Lifeless Planet",
     ["Lobotomy Corporation | Monster Management Simulation"] = "Lobotomy Corporation",
+    ["Lost Castle / 失落城堡"] = "Lost Castle",
     ["Machinika: Museum"] = "Machinika Museum",
     ["Marvel’s Spider-Man Remastered"] = "Marvel's Spider-Man Remastered",
     ["Meadow - A Shelter Game"] = "Meadow",
