@@ -57,7 +57,7 @@ HLTB uses name based search, and often times the name in HLTB does not match Ste
 
 Also note that DLC and non-game content will not have HLTB data.
 
-## How to submit a name correction pull request (PR)
+## How to generate a name correction
 
 We'll use Final Fantasy Tactics for this example.
 
@@ -72,18 +72,32 @@ So our mapping is: "FINAL FANTASY TACTICS - The Ivalice Chronicles" -> "Final Fa
 
 The first entry (key) is the Steam version of the name. The second entry (value) is what we want to substitute it with, which should match HLTB.
 
-When we add it, the new entry needs to be in alphabetical order and include a comma at the end. There is an automated check that looks for duplicates and if it has either of these errors it won't pass the test so won't be merged.
+You should add this correction to your local file and verify that it works before submitting a pull request:
+`Steam/plugins/hltb-for-millennium/backend/name_fixes.lua`
 
-How to submit a PR
+## How to submit a pull request (PR) from the Github website
 
-1. Fork this repo
-2. Make the modification to `backend/name_fixes.lua` in your local copy
-3. Commit and push
-4. At the Github page for your repo, click the link towards the top about submitting a pull request
-5. Send it to me and I will integrate it
-6. The patch will make it into the next release of the HLTB plugin
+If you are already familiar with PRs that is great, just do your thing.
 
-More instructions [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+For new users, here instructions that you can follow purely from the Github website. You just need a Github account and a browser.
+
+When you add the name fix, the new entry needs to be in alphabetical order and include a comma at the end. There is an automated check that looks for duplicates and if it has either of these errors it won't pass the test so won't be merged.
+
+You **must** test it on your local copy before submitting it. I can't test it for you because I probably don't own the game. Other users can't test it for you because they are in different regions and might have other issues going on. It is very important that you test it first - see intructions in the last section.
+
+1. Fork this repo (click the "Fork" button at the top right)
+2. Click "Create Fork" to make your own version of the repo - this is where you'll make your edit and then request that the main repo pulls from it
+3. In your fork, navigate to the file you want to edit: `backend/name_fixes.lua`
+4. Click the pencil icon to edit the file
+5. Make your changes, update the commit message to something descriptive, and click "Commit changes"
+6. Go back to the original repo and click "Pull requests" → "New pull request"
+7. Click "compare across forks" and select your fork as the head repository
+8. Click "Create pull request", add a description, and submit
+9. On the pull request page make sure that all tests are passing (green) - if a test fails then you need to fix it
+
+Official Github instructions:
+* [Forking](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+* [Pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
 ## Development
 
