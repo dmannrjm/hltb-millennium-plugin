@@ -36,6 +36,7 @@ return {
     ["Meadow - A Shelter Game"] = "Meadow",
     ["Might & Magic X - Legacy"] = "Might and Magic X: Legacy",
     ["PICO PARK:Classic Edition"] = "PICO PARK: Classic Edition",
+    ["Plants vs. Zombies GOTY Edition"] = "Plants vs. Zombies",
     ["Ranch Simulator: Build, Hunt, Farm"] = "Ranch Simulator",
     ["Rock of Ages 2: Bigger & Boulder"] = "Rock of Ages II: Bigger & Boulder",
     ["Sea of Thieves: 2025 Edition"] = "Sea of Thieves",
