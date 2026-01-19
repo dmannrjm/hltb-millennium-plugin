@@ -20,6 +20,7 @@ return {
     ["Double Dragon: Neon"] = "Double Dragon Neon",
     ["Dying Light 2 Stay Human: Reloaded Edition"] = "Dying Light 2 Stay Human",
     ["FINAL FANTASY TACTICS - The Ivalice Chronicles"] = "Final Fantasy Tactics: The Ivalice Chronicles",
+    ["Furi Demake - The Chain"] = "Furi Demake: The Chain",
     ["Grand Theft Auto V Legacy"] = "Grand Theft Auto V",
     ["HELLDIVERS Dive Harder Edition"] = "Helldivers",
     ["Heroes of Might & Magic III - HD Edition"] = "Heroes of Might and Magic III",
